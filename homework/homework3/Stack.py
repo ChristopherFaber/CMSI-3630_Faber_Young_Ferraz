@@ -1,71 +1,68 @@
-class Link(object) :
-    Data = 0
-    next = None
-    def __init__(self, value) :
-        self.Data = value
-    def displayLink(self) :
-        print(str(self.Data) + " ", end ="")
-class FirstLastList(object) :
-    first = None
-    last = None
-    def __init__(self) :
-        self.first = None        # Defines 'first' and 'last' within the object FirstLastList
-        self.last = None
-    def  isEmpty(self) :         # Determines if the list is empty and returns the first variable if it is
-        return self.first == None
-    def  isFull(self):           # Tells user if the list is full
-        if self.first == None:
-           print('List is empty')
+# DATA STRUCTURES HW#4
+# DATE: March 19, 2023
+# 4
+'''
+Implement a stack class based on the circular list of Programming Project 5.3.
+This exercise is not too difficult.
+[However, implementing a queue can be harder, unless you make the circular list doubly linked.]
+'''
+
+class Stack():
+    # LIFO STRUCTURE
+    # LISTS are used to implement the stack
+    # right of the list represents tht top of the stack.
+    def __init__(self):
+        self.nItems = 0
+        self.stack_view = []
+        self.pointer = 0 # pointer always points to the top of the stack. 
+        self.next_available = 0
+        return
+    
+
+    def insertion(self,item):
+        # special case for when the first item is added
+        if len(self.stack_view) == 0:
+            self.pointer = 0
+            self.next_available = 1
+            self.stack_view.append(item)
         else:
-           print('List is not empty')
-    def insertFirst(self, value) :         # Method for insertion
-        newLink = Link(value)              # Instantiates the Link object as 'newLink'
-        if (self.isEmpty()) :
-            self.last = newLink            # If the list is empty, the first item in becomes the last item out
-        newLink.next = self.first          # Next link is the first
-        self.first = newLink              
-    def insertLast(self, value) :          # Inserts item in the last position of the list
-        newLink = Link(value)
-        if (self.isEmpty()) :              # Checks if the list is empty
-            self.first = newLink           # Inserts new link in the first position if list is empty
-        else :
-            self.last.next = newLink       # Inserts new link as the current 'last' links next link
-        self.last = newLink                # New link is now the last link
-    def  deleteFirst(self) :               # Method deletes data in the first position
-        temp = self.first.Data             
-        if (self.first.next == None) :
-            self.last = None
-        self.first = self.first.next
-        return temp
-    def displayList(self) :                # Method displays the list
-        print("List (first-->last): ", end ="")
-        current = self.first
-        while (current != None) :
-            current.displayLink()
-            current = current.next
-        print("")
+            self.stack_view.append(item)
+            self.pointer += 1
+            self.next_available += 1
+        return
+    
+    def deletion(self):
+        # when the stack is empty print error message
+        if len(self.stack_view) == 0:
+            self.pointer = 0
+            self.next_available = 0 # if stack is empty, pointer and next_available point to the same index.
+            return print("Stack is empty, can't remove an item.")
+        else:
+            self.stack_view.pop( len(self.stack_view) - 1 ) # remove last item added
+            self.pointer -= 1
+            self.next_available -= 1
 
-MyList = FirstLastList()
-MyList.insertFirst(22)
-MyList.insertFirst(44)
-MyList.insertFirst(66)
+            if self.pointer == -1:
+                self.pointer = 0
+                return
+            return
 
-MyList.insertLast(11)
-MyList.insertLast(33)
-MyList.insertLast(55)
+    def disp(self):
+        return print(self.stack_view)
+    
+def main():
+    s1 = Stack()
+    s1.insertion(0)
+    s1.insertion(1)
+    s1.insertion(2)
+    s1.disp()
+    s1.deletion()
+    s1.disp()
+    s1.deletion()
+    s1.disp()
+    s1.deletion()
+    s1.disp()
+    s1.deletion()
+    s1.disp()
 
-MyList.displayList()
-
-MyList.deleteFirst()
-MyList.deleteFirst()
-
-MyList.displayList()
-
-MyList.isFull()
-
-MyList.deleteFirst()
-MyList.deleteFirst()
-MyList.deleteFirst()
-MyList.deleteFirst()
-
-MyList.isFull()
+main()
